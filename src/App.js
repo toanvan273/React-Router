@@ -1,38 +1,33 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import Home from './components/Home'
-import About from './components/About'
-import Contact from './components/Contact'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Menu from './components/Menu'
+import routes from './routes'
 
-function App() {
-    return (
-        <Router>
-        <div className="App">
-            {/* Menu */}
-            <nav className="navbar navbar-inverse">
-                <ul className="nav navbar-nav">
-                    <li >
-                        <NavLink
-                         activeClassName="active" exact to="/">Trang chủ</NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                         activeClassName="active" to="/about">Giới thiệu</NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                         activeClassName="active" to="/contact">Liên hệ</NavLink>
-                    </li>
-                </ul>
-            </nav>
-            {/* Nội dung */}
-            <Route path="/" exact component={Home} />
-            <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} />
-        </div>
-        </Router>
-    );
+class App extends React.Component {
+    render(){
+        return (
+            <Router>
+                <div className="App">
+                    {/* Menu */}
+                    <Menu />
+                    {/* Nội dung */}
+                    <Switch>
+                        {this.showContentMenus(routes)}
+                    </Switch>
+                </div>
+            </Router>
+        )
+    }
+    showContentMenus = routes => {
+        let result = null
+        result = routes.map(route => {
+            return (
+                <Route key={route} path={route.path} exact={route.exact} component={route.main} />
+            )
+        })
+        return result
+    }
 }
 
 export default App;
